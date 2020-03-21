@@ -8,6 +8,7 @@ Created on Fri Mar 20 23:52:14 2020
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from datetime import datetime
 
 
 # import csv file as pandas DataFrame
@@ -16,11 +17,15 @@ df = pd.read_csv("data.csv")
 # df = df.loc("SK Magdeburg")
 
 # convert it to numpy array
-arr = df.to_numpy()
+# arr = df.to_numpy()
 
-arr = arr[arr[:, 2]=="LK Heinsberg"]
+df = df[df['Landkreis'] == "LK Heinsberg"]
+# plt.plot(arr[:,5])
+# arr = arr.sort(axis=8)
+df['Meldedatum'].map(lambda x: datetime.strptime(x, '%Y-%m-%dT%H:%M:%S.%f%z').date())
+df.sort_values("Meldedatum", inplace=True)
 
-arr = arr.sort(axis=4)
+plt.plot(df["Meldedatum"], df['AnzahlFall'])
 
 # a = []
 # i = 0
