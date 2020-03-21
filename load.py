@@ -13,14 +13,14 @@ import os
 "File to init Github"
 
 """Dieser File dient dazu, die Daten von
-https://opendata.arcgis.com/datasets/917fc37a709542548cc3be077a786c17_0.csv
+https://opendata.arcgis.com/datasets/
+dd4580c810204019a7b8eb3e0b329dd6_0.csv
 herunterzuladen.
 Die Daten werden als CSV file herunrtergeladen.
 """
 
-
 url = "https://opendata.arcgis.com/datasets/"
-url2 = "917fc37a709542548cc3be077a786c17_0.csv"
+url2 = "dd4580c810204019a7b8eb3e0b329dd6_0.csv"
 url = url+url2
 r = requests.get(url, allow_redirects=True)
 
