@@ -10,7 +10,7 @@ import requests
 import os
 
 
-"File to init Github"
+"File to init Github: Erster commit enthält diesen File"
 
 """Dieser File dient dazu, die Daten von
 https://opendata.arcgis.com/datasets/
@@ -18,11 +18,12 @@ dd4580c810204019a7b8eb3e0b329dd6_0.csv
 herunterzuladen.
 Die Daten werden als CSV file herunrtergeladen.
 """
-
+# URL zu den Daten des RKIs
 url = "https://opendata.arcgis.com/datasets/"
 url2 = "dd4580c810204019a7b8eb3e0b329dd6_0.csv"
 url = url+url2
 r = requests.get(url, allow_redirects=True)
 
+# save local as *.csv
 with open(os.path.join("data.csv"), "wb") as f:
     f.write(r.content)

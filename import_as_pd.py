@@ -8,10 +8,12 @@ Created on Fri Mar 20 23:52:14 2020
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
 from datetime import datetime
-# from datetime import timedelta
 from scipy.optimize import curve_fit
+
+# Das Model kann mit den folgenden Funktionen modelliert werden
+# Wir haben uns dazu entschlossen, besonders für den Beginn der Epidemie
+# einen exponentiellen Verlauf anzunehmen.
 
 
 # exponential function for the fit (with offset)
@@ -29,38 +31,43 @@ def func(x, a, b, c):
 
 # import csv file as pandas DataFrame
 df = pd.read_csv("data.csv")
-# df = df[df[:, 2] == "SK Magdeburg"]
-# df = df.loc("SK Magdeburg")
 
-# convert it to numpy array
-# arr = df.to_numpy()
 
-# df = df[df['Landkreis'] == "LK Kleve"]
+# Die Namen der Landkreise könne aus der "data.csv" ermittelt werden
+# Es soll später noch eine Loop über die Werte gelaufen werden, um automatisch
+# die Parameter für alle Landkreise zu bestimmen.
+# Mit Strg + 1 kann aus  und einkommentiert werden, um die verschiedenen
+# Landkreise zu betrachten
+df = df[df['Landkreis'] == "LK Kleve"]
 # df = df[df['Landkreis'] == "SK Kaiserslautern"]
 # df = df[df['Landkreis'] == "SK Leipzig"]
 # df = df[df['Landkreis'] == "SK Nürnberg"]
-df = df[df['Landkreis'] == "SK Berlin Mitte"]
+# df = df[df['Landkreis'] == "SK Berlin Mitte"]
 # df = df[df['Landkreis'] == "SK München"]
 
-# plt.plot(arr[:,5])
-# arr = arr.sort(axis=8)
+# Hier werden die Daten für die Landkreise nach den Daten sortiert
 df['Meldedatum'].map(
     lambda x: datetime.strptime(x, '%Y-%m-%dT%H:%M:%S.%f%z').date())
 df.sort_values("Meldedatum", inplace=True)
+
+# Hier wird über alle verschiedenen Klassen summiert.
 df_sum = df.groupby(["Meldedatum"]).sum()
 
-# array with same length as datapoints
-
-# df_sum = df.sum("Meldedatum")
-
+# Ein array zur hilfe der Visualierung
 arr = np.arange(len(df_sum))
+# Die kummulierte Summe der Datan, um die absolute Anzahl der Infizierten zu
+# erhalten
 df_sum = df_sum.cumsum()
 
 
 # the fit is performed here
+# Es handelt sich hier um einen Least-Squares fit
 popt, pcov = curve_fit(func, arr, df_sum['AnzahlFall'])
+
+# Huer wird die Basisreproduktionsrate berechnet.
 base = np.round(np.exp(popt[1]), decimals=3)
 
+# Hier werden die Plots zur Visualisierung erstellt.
 plt.figure(figsize=(12, 8))
 plt.grid()
 plt.title(df["Landkreis"][df.index[0]], fontsize=20)

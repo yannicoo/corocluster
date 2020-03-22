@@ -6,3 +6,4 @@ Created on Sun Mar 22 15:42:43 2020
 """
 
 
+import numpy as np
